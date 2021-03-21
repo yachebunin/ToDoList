@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
+body {
+  background-color: #3CBAA5;
+  font-family: 'Poppins', sans-serif;
+}
+
+#todo_container {
+  padding: 10px;
+  width: 300px;
+  height: 450px;
+  margin: 100px auto;
+  background: #fff;
+}
+
+#header {
+  height: 30px;
+}
+
+#todo_input {
+  width: 80%;
+  height: 100%;
+  margin-right: -4px;
+  box-sizing: border-box;
+  border: 1px  #2370A4 solid;
+  outline: none;
+}
+
+#button_add {
+  display: inline-block;
+  height: 100%;
+  width: 19.91%;
+  vertical-align: bottom;
+  text-align: center;
+  background-color: #2370A4;
+}
+
+#button_add > button {
+  margin-top: 3px;
+  background-color: transparent;
+  color: #fff;
+  outline: none;
+  border: 0px;
+}
+
+#button_add:hover, #button_add > button:hover {
+  cursor: pointer;
+  background-color: rgb(233, 157, 15);
+}
+
+#button_add:active, #button_add > button:active {
+  transform: translateY(1px);
+}
+
+#todo_list {
+  height: 300px;
+  margin-top: 40px;
+  background-color: rgb(247, 248, 253);
+  overflow: auto;
+}
+
+.todo_item {
+  position: relative;
+  padding: 10px;
+  background-color: #2370A4;
+  color: #fff;
+  border: 1px solid #000;
+  margin-bottom: 2px;
+}
+
+.todo_item > p {
+  max-width: 75%;
+  display: inline-block;
+}
+
+.todo_item > button {
+  position: absolute;
+  margin: 2px;
+  color: #fff;
+  background-color: rgb(185, 51, 51);
+  outline: none;
+}
+
+#close {
+  left: 255px;
+  top: 2px;
+}
+
+#done {
+  left: 220px;
+  top: 2px;
+  background-color: #3CBAA5;
+}
+
+.button_active > p {
+  text-decoration: line-through;
+  color: #3CBAA5;
+}
+
+#footer {
+  display: flex;
+  height: 80px;
+  background-color: #2370A4;
+  border: 1px solid #fff;
+}
+
+#footer > div {
+  flex-basis: 50%;
+  padding-top: 25px;
+  text-align: center;
+  color: #fff;
+}
+
+#footer > div:hover {
+  cursor: pointer;
+  background-color: rgb(233, 157, 15);
+}
+
+#footer > div:active {
+  transform: translateY(2px);
+}

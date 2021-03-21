@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TodoLIST</title>
+
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="normalize.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="vue.js"></script>
+  </head>
+  <body>
+    <div id="todo_container">
+      <div id="header">
+        <input id="todo_input" v-model="text" />
+        <!-- Добавим тудушку -->
+        <div id="button_add">
+          <button @click="add">Add</button>
+        </div>
+      </div>
+      <todo_list :items="items"></todo_list>
+      <div id="footer">
+        <!-- Сохраним список тудушек -->
+        <div id="save" @click="save">Save</div>
+        <!-- Очистим список тудушек -->
+        <div id="clear" @click="clear">Clear</div>
+      </div>
+    </div>
+
+    <script>
+      // Создаем тудушку
+      Vue.component("todo_item", {
+        props: {
+          items: {
+            type: Array, // Валидация
+            required: true,
+          },
+        },
+        methods: {
+          deleteItem(event) {
+            this.items.splice(event.target.parentElement.id, 1); // Удаляем тудушку
+          },
+          doneItem(event) {
+            event.target.parentElement.classList.toggle("button_active"); // Выполнили тудушку
+
+            // проверка на активный стиль тудушки (выполнена или нет), чтобы пометить в localStorage, что тудушка выполнена
+            if (
+              event.target.parentElement.classList.contains("button_active")
+            ) {
+              this.items[event.target.parentElement.id].styleItem =
+                "button_active"; // назначим активный класс
+              this.items[event.target.parentElement.id].id =
+                event.target.parentElement.id; // добавим id, шоб не потерялся бедный
+            } else {
+              this.items[event.target.parentElement.id].styleItem = "";
+              this.items[event.target.parentElement.id].id =
+                event.target.parentElement.id; // добавим id, шоб не потерялся бедный
+            }
+          },
+        },
+        template: `<div>
+          <div v-for="(item, index) in items" class="todo_item" :class="item.styleItem" :id="index">
+            <p>{{item.value}}</p>
+            <button id="close" @click="deleteItem">&#10006;</button>
+            <button id="done" @click="doneItem">&#10003;</button>
+            </div>
+          </div>`, // тудушка
+      });
+
+      // Создаем список тудушек
+      Vue.component("todo_list", {
+        props: {
+          items: {
+            type: Array, // Валидация
+            required: true,
+          },
+        },
+        template: `<div id="todo_list">
+                     <todo_item :items="items"></todo_item>
+                   </div>`,
+      });
+
+      // Создаем Vue
+      var todo = new Vue({
+        el: "#todo_container",
+        data: {
+          text: "", // значение из input
+          items: [], // массив с тудушками
+        },
+        methods: {
+          add() {
+            if (this.text != "") {
+              // чтобы не добавилось дело с пустым значением
+              this.items.push({ value: this.text, styleItem: "" });
+            }
+            this.text = ""; // очищаем input
+          },
+          save() {
+            let todoList = JSON.stringify(this.items);
+            localStorage.setItem("todoList", todoList); // добавляем тудушки в localeStorage
+          },
+          clear() {
+            if (localStorage.getItem("todoList") != null) {
+              localStorage.removeItem("todoList"); // очищаем localeStorage
+            }
+            this.items = []; // очищаем массив с тудушками
+          },
+        },
+      });
+
+      window.onload = function () {
+        if (localStorage.getItem("todoList") != null) {
+          let items = JSON.parse(localStorage.getItem("todoList"));
+
+          // проверка на сохраненные стили (выполненая тудушка или нет)
+          for (let i = 0; i < items.length; i++) {
+            if (items[i].styleItem !== "button_active") {
+              console.log(items[i]);
+            }
+          }
+          todo.items = items; // вытаскиваем тудуЛист из localeStorage
+        }
+      };
+    </script>
+  </body>
+</html>
